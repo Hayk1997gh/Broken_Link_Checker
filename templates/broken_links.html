@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Flask Template Example</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <style type="text/css">
+
+.container {
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+body {
+  background-color: black;
+}
+
+#checked {
+  text-align: center;
+}
+
+
+    </style>
+</head>
+<body>
+<div class="container">
+
+    {% for key in dict %}
+    <ul class="list-group list-group-flush">
+
+        <li class="list-group-item active"><h4 style="text-align:center">Page:</h4>
+            <a class="list-group-item list-group-item-action" id="checked" href="{{key}}" target="_blank"
+               style="color:#0022A1 ">{{key}}</a>
+        </li>
+
+    </ul>
+
+
+    {% for link in dict[key] %}
+    <ul id="nav" class="list-group">
+
+        <li class="list-group-item list-group-item-danger"><h6>Broken URL:</h6><a
+                class="list-group-item list-group-item-action" href="{{link}}" target="_blank" style="color:#FF0000;">{{link}}</a>
+        </li>
+
+    </ul>
+
+    {% endfor %}
+    {% endfor %}
+
+
+</div>
+<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>
+
