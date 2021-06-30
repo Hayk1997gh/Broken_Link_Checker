@@ -1,7 +1,7 @@
 import argparse
-import scraper
-import reporting
-import helper
+import Scraper
+import Reporting
+import Helper
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--url', type=str,
@@ -11,9 +11,9 @@ args = parser.parse_args()
 
 def main():
     print(args.url)
-    scraper.main(args.url, args.url)
-    reporting.create_reporting()
-    print(helper.broken_links_count())
+    Scraper.main(args.url, args.url)
+    Reporting.create_reporting()
+    print(Helper.broken_links_count())
 
 
 if __name__ == '__main__':

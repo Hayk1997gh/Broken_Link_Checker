@@ -6,27 +6,29 @@ import json
 import sys
 import eventlet
 import concurrent.futures
-import constants
+import Constants
 
 
-class Checker:
+class Scraper:
 
     def __init__(self, url_to_check):
         self.BASE_URL = url_to_check
         self.dictionary = {}
 
-    def get_html(self, url):
+    @staticmethod
+    def get_html(url):
         try:
             website_html = requests.get(url)
             html = BeautifulSoup(website_html.text, 'html.parser')
         except requests.exceptions.SSLError:
-            print(constants.WEBSITE_NOT_FOUND_ERROR)
+            print(Constants.WEBSITE_NOT_FOUND_ERROR)
             sys.exit(0)
         except requests.exceptions.ConnectionError:
             return None
         return html
 
-    def get_attributes(self, html, base_url, tag_name, attr_name):
+    @staticmethod
+    def get_attributes(html, base_url, tag_name, attr_name):
         links = []
         for tag in html.findAll(tag_name):
             url = str(tag.get(attr_name))
@@ -67,9 +69,8 @@ class Checker:
                         continue
                     if url not in valid_links:
                         valid_links.append(url)
-                        print("string url ", str(url))
+                        print("valid url -> ", str(url))
                 self.dictionary[link_to_check] = for_each_broken_links
-                print("dictionary keys ", self.dictionary.keys())
                 return valid_links
 
     def write(self):
@@ -79,14 +80,14 @@ class Checker:
 
 
 def main(url, first_base_url):
-    c = Checker(url)
-    normal_urls = c.check_the_urls(url)
+    scraper = Scraper(url)
+    normal_urls = scraper.check_the_urls(url)
     while True:
         if normal_urls:
             for link in normal_urls:
-                if (link.split("//")[1]).find(str(first_base_url)) and link not in c.dictionary.keys():
+                if (link.split("//")[1]).find(str(first_base_url)) and link not in scraper.dictionary.keys():
                     with concurrent.futures.ThreadPoolExecutor() as executor:
-                        future = executor.submit(c.check_the_urls, link)
+                        future = executor.submit(scraper.check_the_urls, link)
                         return_value = future.result()
                         if return_value:
                             for value in return_value:
@@ -99,4 +100,4 @@ def main(url, first_base_url):
                     break
         else:
             break
-    c.write()
+    scraper.write()

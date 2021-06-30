@@ -2,8 +2,8 @@ import webbrowser
 from threading import Timer
 
 from flask import Flask, render_template
-from helper import read_json_keys
-import constants
+from Helper import read_json_keys
+import Constants
 
 app = Flask(__name__)
 
@@ -18,7 +18,7 @@ def broken_links_page():
 
 
 def open_browser():
-    webbrowser.open_new(constants.HOST_URL)
+    webbrowser.open_new(Constants.HOST_URL)
 
 
 def create_reporting():
